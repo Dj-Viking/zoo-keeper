@@ -1,0 +1,28 @@
+{
+  "name": "zoo-keeper",
+  "version": "1.0.0",
+  "description": "Back-end server application using Express.js and Insomnia Core",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dj-Viking/zoo-keeper.git"
+  },
+  "keywords": [
+    "express",
+    "javascript",
+    "insomnia",
+    "nodejs"
+  ],
+  "author": "Anders Ackerman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Dj-Viking/zoo-keeper/issues"
+  },
+  "homepage": "https://github.com/Dj-Viking/zoo-keeper#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
