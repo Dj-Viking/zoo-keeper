@@ -2,9 +2,10 @@
   "name": "zoo-keeper",
   "version": "1.0.0",
   "description": "Back-end server application using Express.js and Insomnia Core",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "npm test"
+    "start": "node server.js",
+    "test": "jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -24,5 +25,8 @@
   "homepage": "https://github.com/Dj-Viking/zoo-keeper#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^26.2.2"
   }
 }
