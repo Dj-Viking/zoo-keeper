@@ -1,5 +1,7 @@
 const express = require('express');//no extension here
 
+const PORT = process.env.PORT || 3001;
+
 const app = express();
 
 const { animals } = require('./data/animals.json');//can put .json extension here or leave it out
@@ -64,6 +66,6 @@ app.get('/api/animals', (req, res) => {
 });
 
 
-app.listen(3001, () => {
+app.listen(PORT, () => {
   console.log(`API server now on port 3001!`);
 });
