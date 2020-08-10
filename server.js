@@ -49,6 +49,10 @@ filterByQuery = (query, animalsArray) => {
   return filteredResults;
 }
 
+findById = (id, animalsArray) => {
+  const result = animalsArray.filter(animal => animal.id === id)[0];
+  return result;
+}
 
 
 //this route could be named anything. as long as the client
@@ -57,15 +61,66 @@ filterByQuery = (query, animalsArray) => {
 // if any changes are saved here need to restart the server!
 // this isn't a live server at the moment
 app.get('/api/animals', (req, res) => {
-  let results = animals;
+  console.log("================");
+  console.log("\x1b[33m", "request query typed by the client", "\x1b[00m");
   console.log(req.query);
+  console.log("================");
+  console.log("\x1b[33m", "path searched by client", "\x1b[00m");
+  console.log(req.path);
+  console.log("================");
+  console.log("\x1b[33m", "protocol client sent request from", "\x1b[00m");
+  console.log(req.protocol);
+  console.log("================");
+  console.log("\x1b[33m", "clients ip which made this request", "\x1b[00m")
+  console.log(req.ip);
+  console.log("================");
+  console.log("\x1b[33m", "request headers", "\x1b[00m");
+  console.log(req.headers);
+  console.log("================");
+  console.log("\x1b[33m", "request fresh", "\x1b[00m");
+  console.log(req.fresh);
+  console.log("================");
+  let results = animals;
+  //console.log(req.query);
   if (req.query) {
     results = filterByQuery(req.query, results);
   }
   res.json(results);
 });
 
+app.get('/api/animals/:id', (req, res) => {
+  console.log("================");
+  console.log("\x1b[33m", "request parameters enterd by the client", "\x1b[00m");
+  console.log(req.params);
+  console.log("================");
+  console.log("\x1b[33m", "path searched by client", "\x1b[00m");
+  console.log(req.path);
+  console.log("================");
+  console.log("\x1b[33m", "protocol client sent request from", "\x1b[00m");
+  console.log(req.protocol);
+  console.log("================");
+  console.log("\x1b[33m", "clients ip which made this request", "\x1b[00m")
+  console.log(req.ip);
+  console.log("================");
+  console.log("\x1b[33m", "request headers", "\x1b[00m");
+  console.log(req.headers);
+  const result = findById(req.params.id, animals);
+  if (result) {
+    res.json(result);
+    // for (let i = 0; i < res.socket.server; i++) {
+    //   console.log(res.socket.server[i]);
+    // }
+    console.log(res.socket.server);
+  } else {
+    res.sendStatus(404);
+  }
+})
+
 
 app.listen(PORT, () => {
   console.log(`API server now on port 3001!`);
 });
+
+
+//link to first deployment
+//https://enigmatic-reef-32412.herokuapp.com/api/animals?personalityTraits=hungry
