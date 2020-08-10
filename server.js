@@ -3,6 +3,20 @@ const express = require('express');//no extension here
 const PORT = process.env.PORT || 3001;
 
 const app = express();
+//in order to handle a POST we need to tell express.js.app
+// to intercept the POST request before it gets to the callback function
+// At this point the data runs through a some functions to take raw data
+// transferred over HTTP and convert it to a JSON object
+
+/**this is also known as middleware to intercept data */
+/**parse incoming string or array data */
+// destructure the extended property and value
+app.use(express.urlencoded({ extended: true }));
+/**parse incoming JSON data */
+app.use(express.json());
+// if we dont do the above middleware, the POST request will return
+// undefined, because it wasn't specified how to handle the POST
+
 
 const { animals } = require('./data/animals.json');//can put .json extension here or leave it out
 
@@ -54,6 +68,15 @@ findById = (id, animalsArray) => {
   return result;
 }
 
+createNewAnimal = (body, animalsArray) => {
+  console.log("================");
+  console.log("\x1b[33m", "creating new animal body object log", "\x1b[00m");
+  console.log(body);
+  //function code
+
+  //return finisehd code to post route for response
+  return body;
+}
 
 //this route could be named anything. as long as the client
 // types this in they will get the response we set here
@@ -114,6 +137,7 @@ app.get('/api/animals/:id', (req, res) => {
     // }
     //console.log(res.socket.server);
   } else {
+    //send() in express has been deprecated 
     res.sendStatus(404);
   }
 });
