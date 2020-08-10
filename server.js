@@ -88,6 +88,8 @@ app.get('/api/animals', (req, res) => {
   res.json(results);
 });
 
+//client request to get data from the server
+// server responds
 app.get('/api/animals/:id', (req, res) => {
   console.log("================");
   console.log("\x1b[33m", "request parameters enterd by the client", "\x1b[00m");
@@ -110,15 +112,23 @@ app.get('/api/animals/:id', (req, res) => {
     // for (let i = 0; i < res.socket.server; i++) {
     //   console.log(res.socket.server[i]);
     // }
-    console.log(res.socket.server);
+    //console.log(res.socket.server);
   } else {
     res.sendStatus(404);
   }
-})
+});
+
+//defining a route that listens for POST requests 
+//client requests the server to accept data sent from the client
+app.post('/api/animals', (req, res) => {
+  // req.body is where our incoming content will be
+  console.log(req.body);
+  res.json(req.body);
+});
 
 
 app.listen(PORT, () => {
-  console.log(`API server now on port 3001!`);
+  console.log("\x1b[32m", `API server now on port 3001!`, "\x1b[00m");
 });
 
 
