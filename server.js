@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+
 const express = require('express');//no extension here
 
 const PORT = process.env.PORT || 3001;
@@ -72,11 +75,59 @@ createNewAnimal = (body, animalsArray) => {
   console.log("================");
   console.log("\x1b[33m", "creating new animal body object log", "\x1b[00m");
   console.log(body);
-  //function code
+  //create an animal based on the json data we got from POST request body
+  const animal = body;
+  //push this data onto the animalsArray
+  animalsArray.push(animal);
+  //write file sync is synchronous version of write file doesn't
+  // require a callback function at all. 
+  // if writing a larger data set the asynchronous would be better
+  // but this will probably write almost instantaneously. 
 
-  //return finisehd code to post route for response
-  return body;
+  /** using path.join() to join the path of this projects current
+   *  directory name
+   *  with the path to animals.json file
+   *  null argument means we dont want to edit any existing data; if we did,
+   *  we could pass something in here. the 2 indicates we want to create
+   *  white space in between our values to make it more readable.
+   */
+  fs.writeFileSync(
+    // not putting .data...i get an error saying .data is not in the path
+    path.join(__dirname, 'data/animals.json'),
+    JSON.stringify({ animals: animalsArray }, null, 2)
+  );
+  console.log("================");
+  console.log("\x1b[33m", "writing file to this path", "\x1b[00m");
+  console.log(path.join(__dirname, '.data/animals.json'));
+  //return the value of the body data
+  console.log("================");
+  console.log("\x1b[33m", "animal that we are adding", "\x1b[00m");
+  console.log(animal);
+  console.log("================");
+  console.log("\x1b[33m", "newly made animalsArray", "\x1b[00m");
+  console.log(animalsArray);
+  return animal;
+  //return finished code to post route for response
+  //return body;
 }
+
+validateAnimal = animal => {
+  if (!animal.name || typeof animal.name !== 'string') {
+    return false;
+  }
+  if (!animal.species || typeof animal.species !== 'string') {
+    return false;
+  }
+  if (!animal.diet || typeof animal.diet !== 'string') {
+    return false;
+  }
+  if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
+    return false;
+  }
+  //if request passes these tests then return true
+  return true;
+}
+
 
 //this route could be named anything. as long as the client
 // types this in they will get the response we set here
@@ -85,7 +136,7 @@ createNewAnimal = (body, animalsArray) => {
 // this isn't a live server at the moment
 app.get('/api/animals', (req, res) => {
   console.log("================");
-  console.log("\x1b[33m", "request query typed by the client", "\x1b[00m");
+  console.log("\x1b[33m", " GET request query typed by the client", "\x1b[00m");
   console.log(req.query);
   console.log("================");
   console.log("\x1b[33m", "path searched by client", "\x1b[00m");
@@ -115,7 +166,7 @@ app.get('/api/animals', (req, res) => {
 // server responds
 app.get('/api/animals/:id', (req, res) => {
   console.log("================");
-  console.log("\x1b[33m", "request parameters enterd by the client", "\x1b[00m");
+  console.log("\x1b[33m", "GET request parameters enterd by the client", "\x1b[00m");
   console.log(req.params);
   console.log("================");
   console.log("\x1b[33m", "path searched by client", "\x1b[00m");
@@ -146,8 +197,33 @@ app.get('/api/animals/:id', (req, res) => {
 //client requests the server to accept data sent from the client
 app.post('/api/animals', (req, res) => {
   // req.body is where our incoming content will be
+  console.log("================");
+  console.log("\x1b[33m", "POST request sent by the client", "\x1b[00m");
   console.log(req.body);
-  res.json(req.body);
+
+  //set id based on what the next index of the array will be
+  // so the user doesn't post data on an id thats already taken up
+  // this only works for now as long a we dont remove data from animals.json,
+  // if we dot hat, the id numbers will be thrown off and we'll have duplicate values at some point
+
+  // will do this soon, focusing on reading and creating data for now.
+  console.log("================");
+  console.log("\x1b[33m", "creating a new id for post request to add an animal", "\x1b[00m");
+  req.body.id = animals.length.toString();
+
+  //if any data in req.body is incorrect, send 400 error back
+  if (!validateAnimal(req.body)) {
+    res.status(400).send('The animal is not properly formatted.');
+  } else {
+    const animal = createNewAnimal(req.body, animals);
+    res.json(animal);
+  }
+
+  //add animal to json file and animals array in this function
+  const animal = createNewAnimal(req.body, animals);
+
+  //res.json(req.body);
+  res.json(animal);
 });
 
 
