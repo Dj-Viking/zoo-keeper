@@ -47,6 +47,20 @@ app.get('/', (req, res) => {
   //res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
+app.get('/animals', (req, res) => {
+  console.log("================");
+  console.log("\x1b[33m", " GET request for animals page", "\x1b[00m");
+  console.log(req.path);
+  res.sendFile(path.join(__dirname, '/public/animals.html'));
+});
+
+app.get('/zookeepers', () => {
+  console.log("================");
+  console.log("\x1b[33m", " GET request for animals page", "\x1b[00m");
+  console.log(req.path);
+  res.sendFile(path.join(__dirname, '/public/zookeepers.html'));
+});
+
 const { animals } = require('./data/animals.json');//can put .json extension here or leave it out
 
 
@@ -142,7 +156,7 @@ validateAnimalParsed = name => {
     //check incoming string
     console.log(name);
     //does it contain only letters
-    console.log("\x1b[33m", "testing letter regex", "\x1b[00m");
+    console.log("\x1b[32m", "testing letter regex", "\x1b[00m");
     console.log(letterRegex.test(name));
     //expect(letterRegex.test(name)).toBe(false);
     if (letterRegex.test(name)) {
@@ -150,10 +164,8 @@ validateAnimalParsed = name => {
       console.log("\x1b[33m", "checking message contains only letters", "\x1b[00m");
       return name;
     } else {
-      
       //keep testing
     }
-    
     let splitStringArr = name.split('');
     console.log("\x1b[33m", "checking split string arr", "\x1b[00m");
     console.log(splitStringArr);
@@ -166,13 +178,13 @@ validateAnimalParsed = name => {
      console.log(parsedStringArr);//has NaN inside
      parsedArr = [parsedStringArr];
      if (parsedStringArr.includes(NaN)){
-       console.log("\x1b[33m", "checking includes NaN", "\x1b[00m");
+        console.log("\x1b[33m", "checking includes NaN", "\x1b[00m");
      } else {
-       console.log("\x1b[33m", "string contains numbers", "\x1b[00m");
-       if (parsedStringArr.includes(NaN)) {
+        console.log("\x1b[33m", "string contains numbers", "\x1b[00m");
+        if (parsedStringArr.includes(NaN)) {
           
-       }
-       return parseInt(parsedStringArr.join(''));
+        }
+        return parseInt(parsedStringArr.join(''));
      }
      console.log(parsedStringArr.join(''));
     let noNaNArr = parsedStringArr.filter(index => !isNaN(index));
@@ -180,6 +192,7 @@ validateAnimalParsed = name => {
     console.log(noNaNArr);
     console.log("\x1b[33m", "joined no NaN Array of numbers", "\x1b[00m");
     console.log(parseInt(noNaNArr.join('')));
+    console.log("\x1b[31m", "this message has numbers!");
     
     return parseInt(noNaNArr.join(''));//this is a number
     //return noNaNArr.join('');//this is a string
@@ -187,7 +200,7 @@ validateAnimalParsed = name => {
 
   //const numRegex = /[0-9]/g;
 validateAnimal = animal => {
-  console.log(animal.personalityTraits);
+  //console.log(animal.personalityTraits);
   if (letterRegex.test(animal.name) && animal.species === '' && animal.diet === '' && animal.personalityTraits === []) {
     return false;
   }
@@ -282,13 +295,13 @@ app.get('/api/animals/:id', (req, res) => {
   const result = findById(req.params.id, animals);
   if (result) {
     res.json(result);
-    // for (let i = 0; i < res.socket.server; i++) {
+    // for (let i = 0; i < res.socket.server.length; i++) {
     //   console.log(res.socket.server[i]);
     // }
     //console.log(res.socket.server);
   } else {
     console.log(res);
-    //send() in express has been deprecated 
+    //.send() in express has been deprecated ??
     res.sendStatus(404);
   }
 });
@@ -309,6 +322,10 @@ app.post('/api/animals', (req, res) => {
   } else {
     console.log("\x1b[31m", "POST request status code", "\x1b[00m");
     console.log(res.statusCode);
+    // will do this soon, focusing on reading and creating data for now.
+    console.log("================");
+    console.log("\x1b[33m", "creating a new id for post request to add an animal", "\x1b[00m");
+    req.body.id = animals.length.toString();
     const animal = createNewAnimal(req.body, animals);
     res.json(animal);
   }
@@ -318,10 +335,6 @@ app.post('/api/animals', (req, res) => {
   // this only works for now as long a we dont remove data from animals.json,
   // if we dot hat, the id numbers will be thrown off and we'll have duplicate values at some point
 
-  // will do this soon, focusing on reading and creating data for now.
-  console.log("================");
-  console.log("\x1b[33m", "creating a new id for post request to add an animal", "\x1b[00m");
-  req.body.id = animals.length.toString();
 
 
   // //add animal to json file and animals array in this function
