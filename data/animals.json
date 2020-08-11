@@ -171,6 +171,18 @@
         "hungry"
       ],
       "id": "17"
+    },
+    {
+      "name": "Insomniac",
+      "species": "Wow",
+      "diet": "herbivore",
+      "personalityTraits": [
+        "hungry",
+        "zany",
+        "anxious",
+        "loving"
+      ],
+      "id": "18"
     }
   ]
 }
