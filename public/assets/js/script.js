@@ -58,20 +58,20 @@ const handleAnimalFormSubmit = event => {
     body: JSON.stringify(animalObject)
   })
   .then(res => {
-    if (res.ok) {
+    console.log(res.statusText);
+    if (res.status === 200) {
+      //console.log(res.statusText);
+      console.log("================");
+      console.log("client created an animal!");
+      window.alert('Thank you for adding an animal!');
       //console.log(res);
       return res.json();
-    } else {
+    } else if (res.status === 400) {
+      //console.log(res.statusText);
       alert('Error: animal name and species must not contain numbers, and must contain a personality Trait');
       //throw new Error("input the acceptable values in the form");
-      
+      return;
     }
-  })
-  .then(postResponse => {
-    console.log("================");
-    //console.log("\x1b[33m", "client created an animal!");
-    console.log(postResponse);
-    //alert('Thank you for adding an animal!');
   })
   .catch(err => err);
 
