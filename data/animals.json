@@ -126,42 +126,6 @@
         "anxious"
       ],
       "id": "12"
-    },
-    {
-      "name": "Tinas",
-      "species": "Ligers",
-      "diet": "omnivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "13"
-    },
-    {
-      "name": "sss",
-      "species": "sss",
-      "diet": "omnivore",
-      "personalityTraits": [
-        "anxious"
-      ],
-      "id": "14"
-    },
-    {
-      "name": "sss",
-      "species": "sss",
-      "diet": "omnivore",
-      "personalityTraits": [
-        "anxious"
-      ],
-      "id": "15"
-    },
-    {
-      "name": "sss",
-      "species": "sss",
-      "diet": "omnivore",
-      "personalityTraits": [
-        "anxious"
-      ],
-      "id": "16"
     }
   ]
 }
