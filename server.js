@@ -20,6 +20,32 @@ app.use(express.json());
 // if we dont do the above middleware, the POST request will return
 // undefined, because it wasn't specified how to handle the POST
 
+/** express middleware that will instruct the server what to send
+ * when the client asks for front end resources like images, JS, and/or CSS
+ * so instead of creating a route for every front-end asset
+ * we use this middleware.
+ * this will instruct the server to make certain files readily available
+ * and not gate it behind the server endpoint. 
+ */
+
+
+/** when using this middleware, any console logs are omitted
+ * whenever the get request to '/' is made
+ */
+app.use(express.static('public'));
+
+//once client requests to enter the home address of the server
+// this will serve up the HTML document for them to look at.
+// notice the file name itself is not in the browser URL
+app.get('/', (req, res) => {
+  console.log("================");
+  console.log("\x1b[33m", " GET request for home page", "\x1b[00m");
+  console.log(req.ip);
+  //this entire get request becomes ignored as the static above
+  // is taking care of every file inside the public folder
+  // instead of creating a route for every single file in public/
+  //res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 const { animals } = require('./data/animals.json');//can put .json extension here or leave it out
 
@@ -110,15 +136,88 @@ createNewAnimal = (body, animalsArray) => {
   //return finished code to post route for response
   //return body;
 }
+const letterRegex = /^[a-zA-Z]+$/;
+validateAnimalParsed = name => {
+  console.log("\x1b[33m","checking input string", "\x1b[00m");
+    //check incoming string
+    console.log(name);
+    //does it contain only letters
+    console.log("\x1b[33m", "testing letter regex", "\x1b[00m");
+    console.log(letterRegex.test(name));
+    //expect(letterRegex.test(name)).toBe(false);
+    if (letterRegex.test(name)) {
+      
+      console.log("\x1b[33m", "checking message contains only letters", "\x1b[00m");
+      return name;
+    } else {
+      
+      //keep testing
+    }
+    
+    let splitStringArr = name.split('');
+    console.log("\x1b[33m", "checking split string arr", "\x1b[00m");
+    console.log(splitStringArr);
+    
+    let parsedStringArr = [];
+    for (let i = 0; i <splitStringArr.length; i++) {
+      parsedStringArr.push(parseInt(splitStringArr[i]));
+    }
+    console.log("\x1b[33m", " checking parsed string arr", "\x1b[00m");
+     console.log(parsedStringArr);//has NaN inside
+     parsedArr = [parsedStringArr];
+     if (parsedStringArr.includes(NaN)){
+       console.log("\x1b[33m", "checking includes NaN", "\x1b[00m");
+     } else {
+       console.log("\x1b[33m", "string contains numbers", "\x1b[00m");
+       if (parsedStringArr.includes(NaN)) {
+          
+       }
+       return parseInt(parsedStringArr.join(''));
+     }
+     console.log(parsedStringArr.join(''));
+    let noNaNArr = parsedStringArr.filter(index => !isNaN(index));
+    console.log("\x1b[33m", "no NaN Array", "\x1b[00m");
+    console.log(noNaNArr);
+    console.log("\x1b[33m", "joined no NaN Array of numbers", "\x1b[00m");
+    console.log(parseInt(noNaNArr.join('')));
+    
+    return parseInt(noNaNArr.join(''));//this is a number
+    //return noNaNArr.join('');//this is a string
+  }
 
+  //const numRegex = /[0-9]/g;
 validateAnimal = animal => {
-  if (!animal.name || typeof animal.name !== 'string') {
+  console.log(animal.personalityTraits);
+  if (letterRegex.test(animal.name) && animal.species === '' && animal.diet === '' && animal.personalityTraits === []) {
     return false;
   }
-  if (!animal.species || typeof animal.species !== 'string') {
+  if (animal.name === '' && letterRegex.test(animal.species) && animal.diet === '' && animal.personalityTraits === []) {
     return false;
   }
-  if (!animal.diet || typeof animal.diet !== 'string') {
+  if (animal.name === '' && animal.species === '' && letterRegex.test(animal.species) && animal.personalityTraits === []) {
+    return false;
+  }
+  if (letterRegex.test(animal.name) && letterRegex.test(animal.species) && letterRegex.test(animal.diet) && animal.personalityTraits[0] === undefined) {
+    return false;
+  } if (letterRegex.test(animal.name) && letterRegex.test(animal.species) && letterRegex.test(animal.diet) && animal.personalityTraits[0] === "") {
+    return false;
+  }
+  // if (!isNaN(animal.name) === false || !isNaN(animal.species) === false || !isNaN(animal)) {
+  //   return false;
+  // }
+  let parsedName = validateAnimalParsed(animal.name);
+  console.log(parsedName);
+  let parsedSpecies = validateAnimalParsed(animal.species);
+  console.log(parsedSpecies);
+  let parsedDiet = validateAnimalParsed(animal.diet);
+  console.log(parsedDiet);
+  if (!animal.name || typeof animal.name !== 'string' || animal.name === '' || typeof parsedName === 'number') {
+    return false;
+  }
+  if (!animal.species || typeof animal.species !== 'string' || animal.species === '' || typeof parsedSpecies === 'number') {
+    return false;
+  }
+  if (!animal.diet || typeof animal.diet !== 'string' || animal.diet === '' || typeof parsedDiet === 'number') {
     return false;
   }
   if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
@@ -152,7 +251,7 @@ app.get('/api/animals', (req, res) => {
   console.log(req.headers);
   console.log("================");
   console.log("\x1b[33m", "request fresh", "\x1b[00m");
-  console.log(req.fresh);
+  console.log(req.statusCode);
   console.log("================");
   let results = animals;
   //console.log(req.query);
@@ -188,6 +287,7 @@ app.get('/api/animals/:id', (req, res) => {
     // }
     //console.log(res.socket.server);
   } else {
+    console.log(res);
     //send() in express has been deprecated 
     res.sendStatus(404);
   }
@@ -200,6 +300,18 @@ app.post('/api/animals', (req, res) => {
   console.log("================");
   console.log("\x1b[33m", "POST request sent by the client", "\x1b[00m");
   console.log(req.body);
+  //if any data in req.body is incorrect, send 400 error back
+  if (validateAnimal(req.body) === false) {
+    res.status(400).send('The animal is not properly formatted.');
+    console.log("================");
+    console.log("\x1b[31m", "POST request status code", "\x1b[00m");
+    console.log(res.statusCode);
+  } else {
+    console.log("\x1b[31m", "POST request status code", "\x1b[00m");
+    console.log(res.statusCode);
+    const animal = createNewAnimal(req.body, animals);
+    res.json(animal);
+  }
 
   //set id based on what the next index of the array will be
   // so the user doesn't post data on an id thats already taken up
@@ -211,20 +323,15 @@ app.post('/api/animals', (req, res) => {
   console.log("\x1b[33m", "creating a new id for post request to add an animal", "\x1b[00m");
   req.body.id = animals.length.toString();
 
-  //if any data in req.body is incorrect, send 400 error back
-  if (!validateAnimal(req.body)) {
-    res.status(400).send('The animal is not properly formatted.');
-  } else {
-    const animal = createNewAnimal(req.body, animals);
-    res.json(animal);
-  }
 
-  //add animal to json file and animals array in this function
-  const animal = createNewAnimal(req.body, animals);
+  // //add animal to json file and animals array in this function
+  // const animal = createNewAnimal(req.body, animals);
 
-  //res.json(req.body);
-  res.json(animal);
+  // //res.json(req.body);
+  // res.json(animal);
 });
+
+
 
 
 app.listen(PORT, () => {

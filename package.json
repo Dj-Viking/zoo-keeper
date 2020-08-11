@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "test:watch": "npm run test -- --watch"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,6 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "jest": "^26.2.2"
+    "jest": "^26.3.0"
   }
 }
