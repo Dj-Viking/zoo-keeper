@@ -126,63 +126,6 @@
         "anxious"
       ],
       "id": "12"
-    },
-    {
-      "name": "test",
-      "species": "test",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "13"
-    },
-    {
-      "name": "testt",
-      "species": "testt",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "14"
-    },
-    {
-      "name": "testt",
-      "species": "testt",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "15"
-    },
-    {
-      "name": "testt",
-      "species": "testt",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "16"
-    },
-    {
-      "name": "testt",
-      "species": "testt",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry"
-      ],
-      "id": "17"
-    },
-    {
-      "name": "Insomniac",
-      "species": "Wow",
-      "diet": "herbivore",
-      "personalityTraits": [
-        "hungry",
-        "zany",
-        "anxious",
-        "loving"
-      ],
-      "id": "18"
     }
   ]
 }

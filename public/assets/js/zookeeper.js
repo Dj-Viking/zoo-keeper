@@ -1,7 +1,7 @@
 const $displayArea = document.querySelector('#display-area');
 
 const printResults = resultArr => {
-  console.log(resultArr);
+  //console.log(resultArr);
 
   const animalHTML = resultArr.map(({ id, name, age, favoriteAnimal }) => {
     return `
@@ -22,16 +22,17 @@ const printResults = resultArr => {
 
 const getZookeepers = () => {
   fetch('/api/zookeepers')
-    .then(response => {
-      if (!response.ok) {
-        return alert('Error: ' + response.statusText);
-      }
-      return response.json();
-    })
-    .then(zookeeperArr => {
-      console.log(zookeeperArr);
-      printResults(zookeeperArr);
-    });
+  .then(response => {
+    console.log(response);
+    if (!response.ok) {
+      return alert('Error: zookeepers database not found ' + response.statusText);
+    }
+    return response.json();
+  })
+  .then(zookeeperObj => {
+    console.log(zookeeperObj);
+    printResults(zookeeperObj.zookeepers);
+  });
 };
 
 getZookeepers();
