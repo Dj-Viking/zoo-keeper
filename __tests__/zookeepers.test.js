@@ -1,16 +1,15 @@
 const fs = require('fs');
 const ZKFuncs = require('../lib/zookeepers.js');
 const { zookeepers } = require('../data/zookeepers.json');
-const { filterByQuery } = require('../lib/animals.js');
 const { findZkById, validateZookeeper } = require('../lib/zookeepers.js');
 
 jest.mock('fs');
 test('creates a zookeeper object', () => {
-  const zookeeper = createNewZookeeper(
+  const zookeeper = ZKFuncs.createNewZookeeper(
     {
       id: "0",
       name: "Darlene",
-      age: "1",
+      age: 1,
       favoriteAnimal: "gorilla",
     },
     zookeepers
@@ -36,7 +35,7 @@ test("filters by query", () => {
     },
   ];
 
-  const updatedZookeepers = filterZkByQuery({ age: 31}, startingZookeepers);
+  const updatedZookeepers = ZKFuncs.filterZkByQuery({ age: 31}, startingZookeepers);
   //console.log(startingZookeepers);
   expect(updatedZookeepers.length).toBe(1);
 });

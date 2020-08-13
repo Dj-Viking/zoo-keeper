@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const ZKFuncs = require('../../lib/zookeepers.js');
-const zookeepers = require('../../data/zookeepers.json');
+const { zookeepers } = require('../../data/zookeepers.json');
 const { createNewZookeeper } = require('../../lib/zookeepers.js');
 
 
@@ -22,11 +22,17 @@ router.get('/zookeepers/:id', (req, res) => {
 });
 
 router.post('/zookeepers', (req, res) => {
-  req.body.id = zookeepers.length.toString();
-
+  console.log(req.body);
+  if (!req.body.id) {
+    req.body.id = "0"
+    console.log(req.body);
+    req.body.id = zookeepers.length.toString();
+  }
+  
   if(!validateZookeeper(req.body)) {
     res.status(400).send("The zookeeper is not properly formatted.");
   } else {
+    console.log(zookeepers);
     const zookeeper = createNewZookeeper(req.body, zookeepers);
     res.json(zookeeper);
   }

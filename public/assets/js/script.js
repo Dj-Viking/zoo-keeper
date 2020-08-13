@@ -8,6 +8,35 @@
 
 
 const $animalForm = document.querySelector('#animal-form');
+const $zookeeperForm = document.querySelector('#zookeeper-form');
+
+const handleZookeeperFormSubmit = event => {
+  event.preventDefault();
+
+  //get zookeeper data and organize it
+  const name = $zookeeperForm.querySelector('[name="zookeeper-name"]').value;
+  const age = parseInt($zookeeperForm.querySelector('[name="age"]').value);
+  const favoriteAnimal = $zookeeperForm.querySelector('[name="favorite-animal"]').value;
+
+  const zookeeperObj = { name, age, favoriteAnimal };
+  console.log(zookeeperObj);
+  fetch('api/zookeepers', {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(zookeeperObj)
+  })
+  .then(res => {
+    if (res.ok) {
+      alert('Thank you for adding a zookeeper!');
+      return res.json();
+    } else {
+      alert('Error: ' + res.statusText);
+    }
+  });
+}
 
 const handleAnimalFormSubmit = event => {
   event.preventDefault();
@@ -78,3 +107,4 @@ const handleAnimalFormSubmit = event => {
 };
 
 $animalForm.addEventListener('submit', handleAnimalFormSubmit);
+$zookeeperForm.addEventListener('submit', handleZookeeperFormSubmit);//adding const in front of the arrow function binds the function i think...it was blue until i added the const and now its yellow and is recognized as a callback function...in theory.
